@@ -1,5 +1,5 @@
 ##################################################################################
-# This script contains the neccesary function in order to load the data
+# This script contains the neccesary function to load the data
 ##################################################################################
 
 import numpy as np
