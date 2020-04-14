@@ -23,7 +23,7 @@ data = data_loading(args.path)
 
 # Load stan model
 with open (args.model_path, "r") as model_definition:
-    model = model_defintion.readlines()
+    model = model_defintion.read()
 
 # Create Stan model object (compile Stan model)
 sm = pystan.StanModel(model_code=model)
