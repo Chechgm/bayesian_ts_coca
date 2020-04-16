@@ -281,11 +281,9 @@ def sumlogs(x, axis=None, out=None):
     out += np.squeeze(maxx)
     return out
 
-
-##### BEGINNING OF OUR CODE ####
 def psis_k(fit, L, M):
     samples = fit.extract()
-    log_lik = np.sum(samples["y_ll"], axis=2)[:, L:M] # The log-ikelihood of each time period from L+1
+    log_lik = np.sum(samples["y_ll"], axis=2)[:, L:M] # The log-likelihood of each time period from L+1
     log_lik = np.sum(log_lik, axis=1)                 # Cumulative sum in order to estimate the raw importance weights
 
     lw = log_lik
@@ -296,20 +294,20 @@ def psis_k(fit, L, M):
 def elpd(fit, L, M):
     samples = fit.extract()
     log_lik = np.sum(samples["y_ll"], axis=2)[:, L:M] # The log-likelihood of each time period from L+1
-    log_lik = np.cumsum(log_lik, axis=1)              # Cumulative sum in order to estimate the raw importance weights
+    log_lik = np.sum(log_lik, axis=1)              # Cumulative sum in order to estimate the raw importance weights
 
-    lw = log_lik
+    lw    = log_lik
     lw, _ = psislw(lw) # compute Pareto smoothed log weights given raw log weights
-    lw += log_lik       # Log weights
-    loos = sumlogs(lw, axis=0)
-    loo = loos.sum()
+    lw    += log_lik       # Log weights
+    loos  = sumlogs(lw, axis=0)
+    loo   = loos.sum()
 
     return loo
 
 def psis_lfo_cv(model, data, L_0):
   data["L"]= L = L_0
   M = L + 2
-  n = data["N_row"]-L_0-1 # n iterations. We iterate from L_0 to the end of our data, -1 because we are predicting one step further
+  n = data["N_row"]-L_0-2 # n iterations. We iterate from L_0 to the end of our data, -2 because we are predicting one step further, and the first is the exact
 
   # Initialize the resulting lists
   loo  = []

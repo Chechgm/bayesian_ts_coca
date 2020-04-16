@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 
 parser = argparse.ArgumentParser()
-parser.add_argument("data_path",  help="Path where the data lies")
+parser.add_argument("data_path", default='data/', help="Path where the data lies")
 parser.add_argument("model_path", help="Path where the model definition lies")
 parser.add_argument("L",          help="Initial value from which we estimate the models")
 args = parser.parse_args()
