@@ -11,7 +11,7 @@ This file is a helper function to modify the raw data. The raw data can be found
 
 The train function trains a given model specified with STAN with data that has been previously transformed using the Build_data.py. The output of this function is: the run time, and the result of the STAN model saved as 'output_model.txt' in your results folder.
 
-Evaluation.py
+## c. Evaluation.py
 
 The evaluation of the model uses Pareto Smoothed Importance Sampling (PSIS) Leave Future Out (LFO) Cross Validation (CV) (PSIS-LFO-CV) …. Using the model that was specified in STAN in order to evaluate its performance. 
 
