@@ -11,6 +11,13 @@
 ##################################################################################
 
 import numpy as np
+import pickle 
+import pystan
+from numpy import genfromtxt
+import time
+import os
+import argparse
+
 
 def psislw(lw, Reff=1.0, overwrite_lw=False):
     """Pareto smoothed importance sampling (PSIS).
@@ -339,4 +346,79 @@ def psis_lfo_cv(model, data, L_0):
 
     print("{} future observation evaluated".format(M-1))
 
-  return loo, ks, re_i
+  return {'loo':loo, 'ks':ks,'re_i': re_i} 
+
+
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--data_dir', default='./data/formated_data/agregated.csv',
+                    help="Directory containing the dataset")
+parser.add_argument('--model_dir', default='./models/ar_1.stan',
+                    help="Directory containing model def")
+
+parser.add_argument('--results_folder', default='./results/',
+                    help="Optional, name of the where the previous fit is")
+
+parser.add_argument('--fit', default=None,
+                    help="Optional, name of the where the previous fit is")  
+
+if __name__ == '__main__':
+
+    # Load the parameters from json file
+    args = parser.parse_args()
+    data_dir = args.data_dir 
+    modeldir = args.model_dir
+    results_folder = args.results_folder
+    
+    with open(modeldir, 'r') as f:
+        model_definition = f.read()
+        
+    
+
+    
+    sm = pystan.StanModel(model_code=model_definition)
+
+
+    aggregated = genfromtxt(data_dir, delimiter=',')
+
+    data = {
+        "N_row": aggregated.shape[0],
+        "N_col": aggregated.shape[1], 
+        "y": aggregated, 
+        "L": 14
+    }
+    
+
+    t0 = time.time()
+    
+    dictresults = psis_lfo_cv(sm, data, 14)
+    
+    t1 = time.time()
+    
+    total = t1-t0
+    
+    modelnn = modeldir.split('/')[-1].split('.')[0]
+    
+    name = results_folder +'/'+ modelnn
+    try:
+        os.mkdir(name)
+    except FileExistsError:
+        pass
+    timefile = name + '/' + 'time.txt'
+    
+    output_model = name + '/' + 'output.txt'
+    
+    pickledresults = name + '/' + 'dict.py'
+    
+# TODO rename it with the name of the model
+    with open(timefile, 'w') as f:
+        f.write('The run time was: {}'.format(str(total)))
+        
+#    with open(output_model , 'w') as f:
+#        f.write(str(fit))
+#    
+    with open(pickledresults , 'wb') as f:
+        pickle.dump(dictresults,f)
+    
+    
