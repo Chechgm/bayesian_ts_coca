@@ -3,7 +3,7 @@
 """
 Created on Tue Apr 14 21:32:47 2020
 
-@author: orangebacked
+@author: orangebacked and chechgm
 """
 
 import pystan
@@ -26,8 +26,6 @@ parser.add_argument('--fit', default=None,
 
 
 
-
-
 if __name__ == '__main__':
 
     # Load the parameters from json file
@@ -38,11 +36,6 @@ if __name__ == '__main__':
     
     with open(modeldir, 'r') as f:
         model_definition = f.read()
-        
-    
-
-    
-#    sm = pystan.StanModel(model_code=model_definition)
 
 
     aggregated = genfromtxt(data_dir, delimiter=',')
@@ -76,4 +69,3 @@ if __name__ == '__main__':
         
     with open('output_model.txt', 'w') as f:
         f.write(str(fit))
-    
