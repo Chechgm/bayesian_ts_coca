@@ -16,3 +16,11 @@ The train function trains a given model specified with STAN with data that has b
 The evaluation of the model uses Pareto Smoothed Importance Sampling (PSIS) Leave Future Out (LFO) Cross Validation (CV) (PSIS-LFO-CV) …. Using the model that was specified in STAN in order to evaluate its performance. 
 
 
+To cite this paper use the following bib:
+```
+@misc{garrido_coca_2020,
+ title={A Bayesian time series model of Coca leaf production in Colombia},
+ author={Sergio Garrido AND Emiliano Isaza},
+ howpublished = {LatinX in AI Workshop @ ICML 2020}
+}
+```
